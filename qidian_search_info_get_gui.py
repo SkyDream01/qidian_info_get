@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import tkinter as tk
 from tkinter import Label, Entry, Button, messagebox
 
-def scrape_by_novel_name(novel_name):
+def scrape_book_info(novel_name):
     # 构建动态 URL
     url = f"https://www.qidian.com/so/{novel_name}.html"
 
@@ -58,45 +58,6 @@ def scrape_by_novel_name(novel_name):
     # 如果没有匹配的小说标题
     return "未找到匹配的小说信息"
 
-def scrape_by_url(url):
-    # 从 URL 获取 HTML 内容
-    response = requests.get(url)
-    html_content = response.text
-
-    # 创建 BeautifulSoup 对象
-    soup = BeautifulSoup(html_content, 'html.parser')
-
-    # 提取标题信息
-    title_elem = soup.find('h1', id='bookName')
-
-    # 在访问其文本属性之前检查元素是否已找到
-    if title_elem:
-        # 获取标题文本
-        title = title_elem.text.strip()
-
-        # 提取其他信息
-        author_elem = soup.find('span', class_='writer')
-        intro_elem = soup.find('p', id='book-intro-detail')
-
-        # 在访问其文本属性之前检查元素是否已找到
-        if author_elem:
-            author = author_elem.text.strip()
-        else:
-            author = "作者不可用"
-
-        if intro_elem:
-            intro = intro_elem.get_text(separator='\n', strip=True)
-        else:
-            intro = "简介不可用"
-
-        # 将信息写入表格并保存为文件
-        result = save_to_file(title, author, url, intro)
-
-        return f"小说信息已保存到 {title}.txt"
-
-    # 如果没有找到标题
-    return "未找到小说信息"
-
 def save_to_file(title, author, website, intro):
     # 文件名为小说标题.txt
     file_name = f"{title}.txt"
@@ -111,14 +72,9 @@ def save_to_file(title, author, website, intro):
 
     return f"小说信息已保存到 {title}.txt"
 
-def on_search_by_novel_name_click():
+def on_search_button_click():
     novel_name = entry.get()
-    result = scrape_by_novel_name(novel_name)
-    messagebox.showinfo("结果", result)
-
-def on_search_by_url_click():
-    url = entry.get()
-    result = scrape_by_url(url)
+    result = scrape_book_info(novel_name)
     messagebox.showinfo("结果", result)
 
 # 创建主窗口
@@ -126,16 +82,14 @@ window = tk.Tk()
 window.title("小说信息抓取")
 
 # 创建控件
-label = Label(window, text="输入要搜索的小说名称或网址:")
+label = Label(window, text="输入要搜索的小说名称:")
 entry = Entry(window)
-search_by_novel_name_button = Button(window, text="按小说名称搜索", command=on_search_by_novel_name_click)
-search_by_url_button = Button(window, text="按网址搜索", command=on_search_by_url_click)
+search_button = Button(window, text="搜索", command=on_search_button_click)
 
 # 布局控件
 label.grid(row=0, column=0, padx=10, pady=10)
 entry.grid(row=0, column=1, padx=10, pady=10)
-search_by_novel_name_button.grid(row=1, column=0, pady=10)
-search_by_url_button.grid(row=1, column=1, pady=10)
+search_button.grid(row=1, column=0, columnspan=2, pady=10)
 
 # 启动主循环
 window.mainloop()
