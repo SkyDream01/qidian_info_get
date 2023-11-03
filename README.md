@@ -1,2 +1,2 @@
 # qidian_info_get_gui
-TSFwiki小说信息手工获取用
+<a href="http://wiki.tsfnovel.com/">TSFwiki</a>小说信息手工获取用
