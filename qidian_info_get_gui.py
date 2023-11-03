@@ -67,7 +67,7 @@ def save_to_file(title, author, website, intro):
         file.write("== 基础信息 ==\n")
         file.write(f"{{| class=\"wikitable\"\n|+\n|作者\n|{author}\n|网站\n|[{website} 起点]\n|-\n|题材\n|\n|状态\n|\n|}}\n\n")
         file.write("== 内容简介 ==\n")
-        file.write(f"{{{intro}}}")
+        file.write(f"{intro}\n")
         file.write("[[分类:小说]]\n")
 
     return f"小说信息已保存到 {title}.txt"
